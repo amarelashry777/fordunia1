@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#09050b">
+<title>For Dunia ❤️</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="stars"></div>
+<div id="hearts"></div>
+
+<section id="welcome" class="lock welcome">
+  <div class="lock-inner">
+    <div class="orbit">♥</div>
+    <p class="eyebrow">THIS IS FOR YOU</p>
+    <h1>Dunia</h1>
+    <div class="line"></div>
+    <p class="question">جاهزة؟</p>
+    <p class="sub">في حاجة صغيرة مستنياكي... 🤍</p>
+    <button id="letsGo" class="main-btn">يلا بينا <span>♥</span></button>
+  </div>
+</section>
+<section id="lock" class="lock hidden">
+  <div class="lock-inner password-card">
+    <img class="password-photo" src="photos/password_photo.jpg" alt="ذكرى جميلة">
+    <div class="orbit">♡</div>
+    <p class="eyebrow">A little secret made for</p>
+    <h1>Dunia</h1>
+    <div class="line"></div>
+    <p class="question">إيه اللي بيميزك؟</p>
+    <p class="sub">الإجابة بيني وبينك بس... 🤍</p>
+    <div class="pass-wrap">
+      <input id="pass" type="password" placeholder="الباسورد" autocomplete="off">
+      <button id="showPass" aria-label="إظهار الباسورد">◉</button>
+    </div>
+    <button id="enter" class="main-btn">ادخلي المفاجأة <span>♥</span></button>
+    <p id="wrong"></p>
+    <small>تلميح: تونيا 😉</small>
+  </div>
+</section>
+
+<main id="site" class="hidden">
+
+<header class="hero">
+  <div class="hero-content">
+    <p class="mini">06 • 09 • A SPECIAL DAY</p>
+    <div class="halo-heart">♥</div>
+    <h2>Happy Birthday</h2>
+    <h1>يا دنيا</h1>
+    <p class="hero-copy">النهارده مش يوم عادي... النهارده اليوم اللي الدنيا بقت فيه أجمل شوية. ❤️</p>
+    <button class="down" onclick="document.getElementById('message').scrollIntoView({behavior:'smooth'})">اكتشفي اللي جوايا ↓</button>
+  </div>
+</header>
+
+<section id="message" class="section">
+  <div class="glass letter">
+    <p class="label">A LETTER FOR YOU</p>
+    <h2>دنيا... ❤️</h2>
+    <div id="typed" class="typed"></div>
+    <p class="sign">من حد شايفك مميزة بطريقة مش عادية.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="heading">
+    <span>01</span><h2>DUNIA • MY FAVORITE PERSON 💗</h2>
+    <p>كل صورة هنا ليها حكاية.</p>
+  </div>
+  <div id="photos" class="photos">
+    <div class="empty">حطي صورك داخل مجلد <b>photos</b> وأضيفي أسماءها في <b>script.js</b> 📸</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="heading">
+    <span>02</span><h2>لحظات تتحرك 🎥</h2>
+    <p>كل الفيديوهات في صفحة لوحدها.</p>
+  </div>
+  <div class="video-link-wrap">
+    <a class="video-link" href="videos.html">افتحي الفيديوهات 🎥 <span>→</span></a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="heading">
+    <span>03</span><h2>FOR YOU</h2>
+    <p>تسجيلات مخصوصة ليكي. 🎙️❤️</p>
+  </div>
+  <div id="audios" class="audios">
+    <div class="empty">ضيفي التسجيلات داخل <b>audio</b> ثم أسماءها في <b>script.js</b>.</div>
+  </div>
+</section>
+
+<section class="section ending">
+  <div class="glass final">
+    <div class="big">♥</div>
+    <p class="label">ONE LAST THING</p>
+    <h2>كل سنة وإنتِ دنيا. ❤️</h2>
+    <p>مش مهم الموقع يخلص... المهم إن الذكرى تفضل.</p>
+    <div class="spark">✦ ✧ ✦</div>
+  </div>
+</section>
+
+<button id="music" class="music">♫</button>
+<audio id="bgMusic" loop></audio><audio id="yallaSound" preload="auto" src="audio/yalla.mp3"></audio>
+
+
+<section class="section last-surprise">
+  <div class="glass final">
+    <p class="label">ONE LAST SURPRISE</p>
+    <h2>مستعدة لآخر حاجة؟ ❤️</h2>
+    <button id="finalButton" class="main-btn">دوسي عليه 💗</button>
+    <audio id="finalAudio" preload="metadata" src="audio/final_message.m4a"></audio>
+    <p id="finalStatus" class="final-status"></p>
+  </div>
+</section>
+
+<div id="balloons" class="balloons" aria-hidden="true"></div>
+
+<footer>Made with love • Dunia's Birthday</footer>
+
+<section class="extra-section" id="miniGame">
+  <div class="section-title">🎀 MINI GAME</div>
+  <div class="game-card">
+    <h2>مين أحلى واحدة في الدنيا؟ 👀</h2>
+    <p>اختاري الإجابة الصح… بس خلي بالك، مفيش غير إجابة واحدة 😂❤️</p>
+    <div class="game-options">
+      <button class="game-option">أنا 😎</button>
+      <button class="game-option">Dunia ❤️</button>
+      <button class="game-option">القمر 🌙</button>
+    </div>
+    <div id="gameResult" class="game-result"></div>
+  </div>
+</section>
+
+<section class="extra-section" id="surpriseBox">
+  <div class="section-title">🎁 SURPRISE BOX</div>
+  <div class="gift-wrap">
+    <button id="giftBox" class="gift-box" aria-label="افتحي صندوق المفاجأة">
+      <span class="gift-lid">🎀</span><span class="gift-body">🎁</span>
+    </button>
+    <p>في حاجة مستخبية هنا… دوسي على الصندوق 👀❤️</p>
+    <div id="giftMessage" class="gift-message hidden">
+      <h2>مفاجأة! 💗</h2>
+      <p>وجودك لوحده كفاية يخلي أي يوم أحلى.</p>
+    </div>
+  </div>
+</section>
+
+<section class="extra-section" id="cdPlayer">
+  <div class="section-title">💿 DUNIA'S CD PLAYER</div>
+  <div class="cd-player-card">
+    <div id="cdDisc" class="cd-disc"><span>LOVE<br>4<br>DUNIA</span></div>
+    <div class="cd-info">
+      <h2>...Baby One More Time 🎀</h2>
+      <p>اضغطي Play واسمعي شوية من الـ CD ❤️</p>
+      <button id="cdPlay" class="pink-btn">▶ Play</button>
+      <button id="cdPause" class="pink-btn secondary">❚❚ Pause</button>
+    </div>
+  </div>
+</section>
+
+<section class="extra-section" id="easterEgg">
+  <div class="section-title">✨ SECRET</div>
+  <div class="egg-card">
+    <p>في سر صغير مستخبي في الموقع… 🤫</p>
+    <button id="eggTrigger" class="secret-btn">✦</button>
+    <div id="eggMessage" class="egg-message hidden">
+      <span>🎀</span>
+      <h2>لقيتي الـ Easter Egg! 😭❤️</h2>
+      <p>واضح إنك شاطرة… ودي ليكي لوحدك 💗</p>
+    </div>
+  </div>
+</section>
+
+<section class="final-message-screen" id="finalMessageScreen">
+  <div class="final-message-card">
+    <div class="tiny-stars">✦ ✧ ✦</div>
+    <h1>ONE LAST THING 💌</h1><p id="finalIntro" class="final-intro">قبل ما الصفحة تخلص… عايزك تقري دي على مهلك ❤️</p>
+    <p class="user-final-message" id="finalTypedMessage" data-message="Dunia ❤️
+
+يمكن أنا مش بعرف أقول كل اللي جوايا بالطريقة الصح،
+بس حقيقي وجودك في حياتي فرق معايا أكتر مما تتخيلي.
+
+النهارده مش بس يوم عيد ميلادك،
+ده يوم بيفكرني قد إيه أنا محظوظ إن في شخص زيك عرفته في حياتي.
+
+أتمنى السنة الجديدة من عمرك تكون مليانة ضحك،
+وراحة، وحاجات حلوة تستاهليها…
+وتفضلي دايمًا بنفس الضحكة اللي بحبها. ❤️
+
+كل سنة وإنتِ Dunia،
+وكل سنة وإنتِ My Favorite Person. 💗
+
+ومهما كبرت الأيام،
+أتمنى تفضلي فاكرة إن في حد كان نفسه يخلي يومك ده
+مختلف عن أي يوم تاني. 🎀"></p>
+    <div class="signature" id="finalSignature">DUNIA • MY FAVORITE PERSON 💗</div>
+  </div>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+<audio id="cdAudio" preload="metadata"><source src="audio/baby_one_more_time.mp3" type="audio/mpeg"></audio>
+</body>
+</html>
