@@ -625,3 +625,42 @@ if (finalScreen) {
 
   observer.observe(finalScreen);
 }
+<main class="video-page-grid">
+
+  <article class="video-card">
+    <video controls playsinline preload="metadata" src="dhka.mov"></video>
+  </article>
+
+  <article class="video-card">
+    <video controls playsinline preload="metadata" src="memory_1.mp4"></video>
+  </article>
+
+  <article class="video-card">
+    <video controls playsinline preload="metadata" src="memory_2.mp4"></video>
+  </article>
+
+  <article class="video-card">
+    <video controls playsinline preload="metadata" src="memory_3.mp4"></video>
+  </article>
+
+  <article class="video-card">
+    <video controls playsinline preload="metadata" src="memory_4.mov"></video>
+  </article>
+
+  <article class="video-card">
+    <video controls playsinline preload="metadata" src="memory_5.mp4"></video>
+  </article>
+
+  <article class="video-card">
+    <video controls playsinline preload="metadata" src="memory_6.mov"></video>
+  </article>
+
+  <article class="video-card">
+    <video controls playsinline preload="metadata" src="memory_7.mp4"></video>
+  </article>
+
+  <article class="video-card">
+    <video controls playsinline preload="metadata" src="memory_8.mov"></video>
+  </article>
+
+</main>
