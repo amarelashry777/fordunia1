@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#09050b">
+<title>Dunia • Videos</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="videos-page">
+<div id="stars"></div>
+<div id="hearts"></div>
+<header class="page-head">
+  <a class="back" href="index.html">← الرئيسية</a>
+  <p class="label">DUNIA • MEMORIES</p>
+  <h1>فيديوهاتنا 🎥</h1>
+  <p>كل لحظة ليها حكاية.</p>
+</header>
+<main class="video-page-grid">
+      <article class="video-card"><video controls playsinline preload="metadata" src="videos/dhka.mov"></video></article>
+      <article class="video-card"><video controls playsinline preload="metadata" src="videos/memory_1.mp4"></video></article>
+      <article class="video-card"><video controls playsinline preload="metadata" src="videos/memory_2.mp4"></video></article>
+      <article class="video-card"><video controls playsinline preload="metadata" src="videos/memory_3.mp4"></video></article>
+      <article class="video-card"><video controls playsinline preload="metadata" src="videos/memory_4.mov"></video></article>
+      <article class="video-card"><video controls playsinline preload="metadata" src="videos/memory_5.mp4"></video></article>
+      <article class="video-card"><video controls playsinline preload="metadata" src="videos/memory_6.mov"></video></article>
+      <article class="video-card"><video controls playsinline preload="metadata" src="videos/memory_7.mp4"></video></article>
+      <article class="video-card"><video controls playsinline preload="metadata" src="videos/memory_8.mov"></video></article>
+</main>
+<footer>Made with love • Dunia ❤️</footer>
+<script>
+for(let i=0;i<45;i++){
+  const s=document.createElement("i");s.className="star";
+  s.style.left=Math.random()*100+"vw";s.style.top=Math.random()*100+"vh";
+  s.style.opacity=.15+Math.random()*.5;document.getElementById("stars").appendChild(s);
+}
+</script>
+</body>
+</html>
