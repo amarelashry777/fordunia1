@@ -96,7 +96,7 @@ function render(){
     $("photos").innerHTML="";
     photos.forEach(f=>{
       const img=document.createElement("img");
-      img.src="photos/"+f; img.alt="ذكرى"; img.loading="lazy";
+      img.src=""+f; img.alt="ذكرى"; img.loading="lazy";
       $("photos").appendChild(img);
     });
   }
@@ -104,7 +104,7 @@ function render(){
     $("videos").innerHTML="";
     videos.forEach(f=>{
       const v=document.createElement("video");
-      v.src="videos/"+f; v.controls=true; v.playsInline=true;
+      v.src=""+f; v.controls=true; v.playsInline=true;
       $("videos").appendChild(v);
     });
   }
@@ -113,12 +113,12 @@ function render(){
     audios.forEach(a=>{
       const box=document.createElement("div"); box.className="audio-item";
       box.innerHTML=`<p>${a.title||"تسجيل صوتي ❤️"}</p>`;
-      const au=document.createElement("audio"); au.src="audio/"+a.file; au.controls=true;
+      const au=document.createElement("audio"); au.src=""+a.file; au.controls=true;
       box.appendChild(au); $("audios").appendChild(box);
     });
   }
   if(musicFile){
-    $("bgMusic").src="audio/"+musicFile;
+    $("bgMusic").src=""+musicFile;
     const m = $("bgMusic");
     m.addEventListener("timeupdate", () => {
       if (m.currentTime >= musicMaxSeconds) {
