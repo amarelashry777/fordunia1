@@ -1,108 +1,627 @@
-// ===== FINAL SCREEN FINAL FIX =====
+const photos = [
+  "password_photo.jpg",
+  "dunia_photo_2.jpeg",
+  "dunia_photo_3.jpeg"
+];
 
-window.addEventListener("load", function () {
+const videos = [
+  "memory_1.mp4",
+  "memory_2.mp4",
+  "memory_3.mp4",
+  "memory_4.mov",
+  "memory_5.mp4",
+  "memory_6.mov",
+  "memory_7.mp4",
+  "memory_8.mov"
+];
 
-  const screen = document.getElementById("finalMessageScreen");
-  const card = document.querySelector("#finalMessageScreen .final-message-card");
-  const title = document.querySelector("#finalMessageScreen h1");
-  const intro = document.querySelector("#finalMessageScreen .final-intro");
-  const message = document.getElementById("finalTypedMessage");
-  const signature = document.getElementById("finalSignature");
+const audios = [
+  {file:"for_you_1.m4a", title:"FOR YOU • 01 ❤️"},
+  {file:"for_you_2.m4a", title:"FOR YOU • 02 ❤️"},
+  {file:"for_you_3.m4a", title:"FOR YOU • 03 ❤️"}
+];
 
-  if (!screen || !card || !message) return;
+const musicFile = "baby_one_more_time.mp3";
+const musicMaxSeconds = 60;
+const password = "تونيا";
 
-  // الشاشة
-  screen.style.setProperty("min-height", "100vh", "important");
-  screen.style.setProperty("display", "flex", "important");
-  screen.style.setProperty("align-items", "center", "important");
-  screen.style.setProperty("justify-content", "center", "important");
-  screen.style.setProperty("padding", "50px 15px", "important");
-  screen.style.setProperty("background", "linear-gradient(180deg,#fff,#fff5fa,#ffe8f3)", "important");
-  screen.style.setProperty("overflow", "hidden", "important");
+const $ = id => document.getElementById(id);
 
-  // الكارت
-  card.style.setProperty("width", "min(800px,100%)", "important");
-  card.style.setProperty("background", "#ffffff", "important");
-  card.style.setProperty("color", "#111111", "important");
-  card.style.setProperty("text-align", "center", "important");
-  card.style.setProperty("direction", "rtl", "important");
-  card.style.setProperty("opacity", "1", "important");
-  card.style.setProperty("transform", "none", "important");
-  card.style.setProperty("position", "relative", "important");
-  card.style.setProperty("z-index", "20", "important");
-  card.style.setProperty("padding", "35px 20px", "important");
-  card.style.setProperty("border-radius", "25px", "important");
-  card.style.setProperty("border", "3px solid #111", "important");
-  card.style.setProperty("box-shadow", "9px 9px 0 #111", "important");
+const welcome = $("welcome");
+const yallaSound = $("yallaSound");
+const letsGo = $("letsGo");
 
-  // العنوان
-  if (title) {
-    title.style.setProperty("color", "#111111", "important");
-    title.style.setProperty("opacity", "1", "important");
+if (letsGo) {
+  letsGo.addEventListener("click", async () => {
+    if (welcome) welcome.classList.add("hidden");
+
+    const lock = $("lock");
+    if (lock) lock.classList.remove("hidden");
+
+    try {
+      if (yallaSound) {
+        yallaSound.currentTime = 0;
+        await yallaSound.play();
+      }
+    } catch(e) {}
+
+    if ($("pass")) $("pass").focus();
+  });
+}
+
+const pass = $("pass");
+const wrong = $("wrong");
+
+if ($("enter")) $("enter").onclick = unlock;
+
+if (pass) {
+  pass.addEventListener("keydown", e => {
+    if (e.key === "Enter") unlock();
+  });
+}
+
+if ($("showPass")) {
+  $("showPass").onclick = () => {
+    pass.type = pass.type === "password" ? "text" : "password";
+  };
+}
+
+function unlock() {
+  if (!pass) return;
+
+  if (pass.value.trim() !== password) {
+    if (wrong) wrong.textContent = "الباسورد مش صح... حاولي تاني ❤️";
+    pass.value = "";
+    return;
   }
 
-  // المقدمة
-  if (intro) {
-    intro.style.setProperty("color", "#555555", "important");
-    intro.style.setProperty("opacity", "1", "important");
+  if ($("lock")) $("lock").classList.add("hidden");
+  if ($("site")) $("site").classList.remove("hidden");
+
+  startHearts();
+  typeLetter();
+
+  const m = $("bgMusic");
+
+  if (m && musicFile) {
+    m.src = musicFile;
+    m.volume = 0.7;
+
+    m.play()
+      .then(() => {
+        if ($("music")) $("music").textContent = "❚❚";
+      })
+      .catch(() => {});
+  }
+}
+
+const message = `دنيا،
+
+النهارده حبيت أعملك حاجة مختلفة...
+مش مجرد رسالة تتبعت وتخلص،
+لكن مكان صغير تفضلي تفتكريه كل ما تحبيه.
+
+يمكن الكلام ساعات ما يكفيش،
+بس أتمنى كل تفصيلة هنا توصلك حاجة واحدة:
+إن وجودك مميز،
+وإن ضحكتك ليها مكان خاص جدًا.
+
+في عيد ميلادك، أتمنى لك سنة جديدة
+تكون أهدى، وأجمل، ومليانة حاجات تستاهليها.
+
+كل سنة وإنتِ طيبة يا دنيا،
+وكل سنة وإنتِ أحلى "دنيا". ❤️`;
+
+function typeLetter() {
+  const el = $("typed");
+
+  if (!el) return;
+
+  let i = 0;
+
+  const timer = setInterval(() => {
+    el.textContent = message.slice(0, ++i);
+
+    if (i >= message.length) {
+      clearInterval(timer);
+    }
+  }, 28);
+}
+
+function render() {
+
+  const photoContainer = $("photos");
+
+  if (photoContainer && photos.length) {
+    photoContainer.innerHTML = "";
+
+    photos.forEach(file => {
+      const img = document.createElement("img");
+
+      img.src = file;
+      img.alt = "Dunia ❤️";
+      img.loading = "lazy";
+
+      photoContainer.appendChild(img);
+    });
   }
 
-  // الرسالة
-  const text = message.dataset.message || "";
+  const videoContainer = $("videos");
 
-  message.innerHTML = "";
+  if (videoContainer && videos.length) {
+    videoContainer.innerHTML = "";
 
-  message.style.setProperty("color", "#111111", "important");
-  message.style.setProperty("opacity", "1", "important");
-  message.style.setProperty("display", "block", "important");
-  message.style.setProperty("width", "100%", "important");
-  message.style.setProperty("max-width", "700px", "important");
-  message.style.setProperty("margin", "0 auto", "important");
-  message.style.setProperty("font-size", "20px", "important");
-  message.style.setProperty("line-height", "1.9", "important");
-  message.style.setProperty("text-align", "center", "important");
-  message.style.setProperty("direction", "rtl", "important");
+    videos.forEach(file => {
+      const v = document.createElement("video");
 
-  text.split("\n").forEach(function(line, index) {
+      v.src = file;
+      v.controls = true;
+      v.playsInline = true;
+      v.preload = "metadata";
 
-    const span = document.createElement("span");
+      videoContainer.appendChild(v);
+    });
+  }
 
-    span.textContent = line || "\u00A0";
+  const audioContainer = $("audios");
 
-    span.style.display = "block";
-    span.style.color = index === 0 ? "#d10067" : "#111111";
-    span.style.opacity = "0";
-    span.style.transform = "translateY(12px)";
-    span.style.transition = "opacity .7s ease, transform .7s ease";
-    span.style.margin = "5px 0";
+  if (audioContainer && audios.length) {
+    audioContainer.innerHTML = "";
 
-    if (index === 0) {
-      span.style.fontWeight = "900";
-      span.style.fontSize = "1.15em";
+    audios.forEach(audio => {
+
+      const box = document.createElement("div");
+
+      box.className = "audio-item";
+
+      const title = document.createElement("p");
+
+      title.textContent = audio.title;
+
+      const au = document.createElement("audio");
+
+      au.src = audio.file;
+      au.controls = true;
+      au.preload = "metadata";
+
+      box.appendChild(title);
+      box.appendChild(au);
+
+      audioContainer.appendChild(box);
+    });
+  }
+
+  const m = $("bgMusic");
+
+  if (m && musicFile) {
+
+    m.src = musicFile;
+
+    m.addEventListener("timeupdate", () => {
+
+      if (m.currentTime >= musicMaxSeconds) {
+
+        m.pause();
+        m.currentTime = 0;
+
+        if ($("music")) {
+          $("music").textContent = "♫";
+        }
+      }
+    });
+
+    if ($("music")) {
+
+      $("music").onclick = async () => {
+
+        try {
+
+          if (m.paused) {
+
+            if (m.currentTime >= musicMaxSeconds) {
+              m.currentTime = 0;
+            }
+
+            await m.play();
+
+            $("music").textContent = "❚❚";
+
+          } else {
+
+            m.pause();
+
+            $("music").textContent = "♫";
+          }
+
+        } catch(e) {}
+      };
     }
 
-    message.appendChild(span);
+  } else {
 
-    setTimeout(function() {
-      span.style.opacity = "1";
-      span.style.transform = "translateY(0)";
-    }, 500 + index * 350);
+    if ($("music")) {
+      $("music").style.display = "none";
+    }
+  }
+}
 
+function createHeart() {
+
+  const container = $("hearts");
+
+  if (!container) return;
+
+  const h = document.createElement("div");
+
+  h.className = "heart";
+
+  h.textContent = Math.random() > .25 ? "♥" : "♡";
+
+  h.style.left = Math.random() * 100 + "vw";
+
+  h.style.fontSize =
+    14 + Math.random() * 24 + "px";
+
+  h.style.animationDuration =
+    4 + Math.random() * 4 + "s";
+
+  container.appendChild(h);
+
+  setTimeout(() => h.remove(), 9000);
+}
+
+function startHearts() {
+
+  setInterval(() => {
+    createHeart();
+  }, 650);
+}
+
+const starsContainer = $("stars");
+
+if (starsContainer) {
+
+  for (let i = 0; i < 80; i++) {
+
+    const s = document.createElement("i");
+
+    s.className = "star";
+
+    s.style.left = Math.random() * 100 + "vw";
+
+    s.style.top = Math.random() * 100 + "vh";
+
+    s.style.opacity =
+      .15 + Math.random() * .5;
+
+    starsContainer.appendChild(s);
+  }
+}
+
+render();
+
+
+// =====================================
+// LAST SURPRISE
+// =====================================
+
+const finalButton = $("finalButton");
+const finalAudio = $("finalAudio");
+const finalStatus = $("finalStatus");
+const balloons = $("balloons");
+
+if (finalButton && finalAudio) {
+
+  finalButton.addEventListener("click", async () => {
+
+    try {
+
+      finalAudio.currentTime = 0;
+
+      await finalAudio.play();
+
+      finalButton.textContent =
+        "بيشتغل دلوقتي 🎙️";
+
+      if (finalStatus) {
+        finalStatus.textContent =
+          "اسمعي للآخر... ❤️";
+      }
+
+    } catch(e) {
+
+      if (finalStatus) {
+        finalStatus.textContent =
+          "دوسي مرة تانية لتشغيل الريكورد ❤️";
+      }
+    }
   });
 
-  // التوقيع
-  if (signature) {
+  finalAudio.addEventListener("ended", () => {
 
-    signature.style.setProperty("color", "#d10067", "important");
-    signature.style.setProperty("opacity", "0", "important");
-    signature.style.setProperty("transform", "translateY(10px)", "important");
-    signature.style.setProperty("position", "relative", "important");
-    signature.style.setProperty("z-index", "30", "important");
+    finalButton.textContent =
+      "المفاجأة خلصت 🎈";
 
-    setTimeout(function() {
-      signature.style.setProperty("opacity", "1", "important");
-      signature.style.setProperty("transform", "translateY(0)", "important");
-    }, 500 + text.split("\n").length * 350 + 700);
+    if (finalStatus) {
+      finalStatus.textContent =
+        "كل سنة وإنتِ طيبة يا Dunia ❤️";
+    }
+
+    launchBalloons();
+  });
+}
+
+function launchBalloons() {
+
+  if (!balloons) return;
+
+  const count = 28;
+
+  for (let i = 0; i < count; i++) {
+
+    const b = document.createElement("div");
+
+    b.className = "balloon";
+
+    b.style.left =
+      Math.random() * 100 + "%";
+
+    b.style.animationDelay =
+      Math.random() * 1.8 + "s";
+
+    b.style.animationDuration =
+      4 + Math.random() * 3 + "s";
+
+    const size =
+      32 + Math.random() * 28;
+
+    b.style.width =
+      size + "px";
+
+    b.style.height =
+      size * 1.32 + "px";
+
+    const hue =
+      Math.random() * 360;
+
+    b.style.color =
+      `hsl(${hue}, 70%, 65%)`;
+
+    b.style.background =
+      `hsl(${hue}, 70%, 65%)`;
+
+    balloons.appendChild(b);
+
+    setTimeout(() => b.remove(), 8500);
+  }
+}
+
+
+// =====================================
+// MINI GAME
+// =====================================
+
+document.querySelectorAll(".game-option")
+.forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    const result = $("gameResult");
+
+    if (!result) return;
+
+    if (button.textContent.includes("Dunia")) {
+
+      result.textContent =
+        "صح! إنتِ طبعًا ❤️😂";
+
+      result.style.color =
+        "#d10067";
+
+      for (let i = 0; i < 12; i++) {
+        setTimeout(createHeart, i * 70);
+      }
+
+    } else {
+
+      result.textContent =
+        "غلط 😂 جربي تاني… الإجابة واضحة جدًا: Dunia ❤️";
+
+      result.style.color =
+        "#000";
+    }
+  });
+});
+
+
+// =====================================
+// SURPRISE BOX
+// =====================================
+
+const giftBox = $("giftBox");
+
+if (giftBox) {
+
+  giftBox.addEventListener("click", () => {
+
+    giftBox.classList.add("opened");
+
+    const giftMessage =
+      $("giftMessage");
+
+    if (giftMessage) {
+      giftMessage.classList.remove("hidden");
+    }
+
+    for (let i = 0; i < 18; i++) {
+      setTimeout(createHeart, i * 45);
+    }
+  });
+}
+
+
+// =====================================
+// CD PLAYER
+// =====================================
+
+const cdAudio = $("cdAudio");
+const cdDisc = $("cdDisc");
+const cdPlay = $("cdPlay");
+const cdPause = $("cdPause");
+
+if (cdAudio) {
+
+  if (cdPlay) {
+
+    cdPlay.addEventListener("click", async () => {
+
+      try {
+
+        await cdAudio.play();
+
+        if (cdDisc) {
+          cdDisc.classList.add("playing");
+        }
+
+      } catch(e) {}
+    });
   }
 
-});
+  if (cdPause) {
+
+    cdPause.addEventListener("click", () => {
+
+      cdAudio.pause();
+
+      if (cdDisc) {
+        cdDisc.classList.remove("playing");
+      }
+    });
+  }
+
+  cdAudio.addEventListener("ended", () => {
+
+    if (cdDisc) {
+      cdDisc.classList.remove("playing");
+    }
+  });
+}
+
+
+// =====================================
+// EASTER EGG
+// =====================================
+
+const eggTrigger = $("eggTrigger");
+
+if (eggTrigger) {
+
+  eggTrigger.addEventListener("click", () => {
+
+    const eggMessage =
+      $("eggMessage");
+
+    if (eggMessage) {
+      eggMessage.classList.remove("hidden");
+    }
+
+    for (let i = 0; i < 25; i++) {
+      setTimeout(createHeart, i * 35);
+    }
+  });
+}
+
+
+// =====================================
+// FINAL LETTER
+// =====================================
+
+const finalScreen =
+  $("finalMessageScreen");
+
+const finalCard =
+  finalScreen?.querySelector(".final-message-card");
+
+const finalTyped =
+  $("finalTypedMessage");
+
+const finalSignature =
+  $("finalSignature");
+
+function revealFinalLetter() {
+
+  if (
+    !finalScreen ||
+    !finalTyped ||
+    finalTyped.dataset.started === "1"
+  ) {
+    return;
+  }
+
+  finalTyped.dataset.started = "1";
+
+  if (finalCard) {
+    finalCard.classList.add("reveal");
+  }
+
+  const msg =
+    finalTyped.dataset.message || "";
+
+  finalTyped.innerHTML = "";
+
+  const lines =
+    msg.split("\n");
+
+  lines.forEach((line, i) => {
+
+    const span =
+      document.createElement("span");
+
+    span.className = "line";
+
+    span.textContent =
+      line || "\u00A0";
+
+    finalTyped.appendChild(span);
+
+    setTimeout(() => {
+
+      span.classList.add("show");
+
+    }, 900 + i * 420);
+  });
+
+  setTimeout(() => {
+
+    if (finalSignature) {
+      finalSignature.classList.add("show");
+    }
+
+    finalScreen.classList.add("finished");
+
+    for (let i = 0; i < 18; i++) {
+      setTimeout(createHeart, i * 55);
+    }
+
+  }, 900 + lines.length * 420 + 600);
+}
+
+if (finalScreen) {
+
+  const observer =
+    new IntersectionObserver(entries => {
+
+      entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+          revealFinalLetter();
+        }
+
+      });
+
+    }, {
+      threshold: 0.35
+    });
+
+  observer.observe(finalScreen);
+}
