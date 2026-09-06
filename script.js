@@ -1,12 +1,7 @@
-// ====== الملفات: ضيفي أسماء ملفاتك هنا ======
 const photos = [
   "password_photo.jpg",
   "dunia_photo_2.jpeg",
-  "dunia_photo_3.jpeg",
-  // "photo1.jpg",
-  // "photo2.jpg",
-  // "photo3.jpg",
-  // "photo4.jpg",
+  "dunia_photo_3.jpeg"
 ];
 
 const videos = [
@@ -17,52 +12,87 @@ const videos = [
   "memory_5.mp4",
   "memory_6.mov",
   "memory_7.mp4",
-  "memory_8.mov",
+  "memory_8.mov"
 ];
 
 const audios = [
   {file:"for_you_1.m4a", title:"FOR YOU • 01 ❤️"},
   {file:"for_you_2.m4a", title:"FOR YOU • 02 ❤️"},
-  {file:"for_you_3.m4a", title:"FOR YOU • 03 ❤️"},
+  {file:"for_you_3.m4a", title:"FOR YOU • 03 ❤️"}
 ];
 
-// لو عندك أغنية، ضعيها داخل audio ثم اكتبي اسمها هنا
 const musicFile = "baby_one_more_time.mp3";
-
+const musicMaxSeconds = 60;
 const password = "تونيا";
 
-const welcome = document.getElementById("welcome");
-const yallaSound = document.getElementById("yallaSound");
-const letsGo = document.getElementById("letsGo");
-letsGo.addEventListener("click", async () => {
-  welcome.classList.add("hidden");
-  document.getElementById("lock").classList.remove("hidden");
-  try { await yallaSound.play(); } catch(e) {}
-  document.getElementById("pass").focus();
-});
-
 const $ = id => document.getElementById(id);
-const pass = $("pass"), wrong = $("wrong");
 
-$("enter").onclick = unlock;
-pass.addEventListener("keydown", e => { if(e.key==="Enter") unlock(); });
+const welcome = $("welcome");
+const yallaSound = $("yallaSound");
+const letsGo = $("letsGo");
 
-$("showPass").onclick = () => {
-  pass.type = pass.type === "password" ? "text" : "password";
-};
+if (letsGo) {
+  letsGo.addEventListener("click", async () => {
+    if (welcome) welcome.classList.add("hidden");
 
-function unlock(){
-  if(pass.value.trim() !== password){
-    wrong.textContent = "الباسورد مش صح... حاولي تاني ❤️";
+    const lock = $("lock");
+    if (lock) lock.classList.remove("hidden");
+
+    try {
+      if (yallaSound) {
+        yallaSound.currentTime = 0;
+        await yallaSound.play();
+      }
+    } catch(e) {}
+
+    if ($("pass")) $("pass").focus();
+  });
+}
+
+const pass = $("pass");
+const wrong = $("wrong");
+
+if ($("enter")) $("enter").onclick = unlock;
+
+if (pass) {
+  pass.addEventListener("keydown", e => {
+    if (e.key === "Enter") unlock();
+  });
+}
+
+if ($("showPass")) {
+  $("showPass").onclick = () => {
+    pass.type = pass.type === "password" ? "text" : "password";
+  };
+}
+
+function unlock() {
+  if (!pass) return;
+
+  if (pass.value.trim() !== password) {
+    if (wrong) wrong.textContent = "الباسورد مش صح... حاولي تاني ❤️";
     pass.value = "";
     return;
   }
-  $("lock").classList.add("hidden");
-  $("site").classList.remove("hidden");
+
+  if ($("lock")) $("lock").classList.add("hidden");
+  if ($("site")) $("site").classList.remove("hidden");
+
   startHearts();
   typeLetter();
+
   const m = $("bgMusic");
-  if (m.src) { m.volume = 0.7; m.play().then(()=>{$("music").textContent="❚❚"}).catch(()=>{}); }
+
+  if (m && musicFile) {
+    m.src = musicFile;
+    m.volume = 0.7;
+
+    m.play()
+      .then(() => {
+        if ($("music")) $("music").textContent = "❚❚";
+      })
+      .catch(() => {});
+  }
 }
 
 const message = `دنيا،
@@ -82,205 +112,516 @@ const message = `دنيا،
 كل سنة وإنتِ طيبة يا دنيا،
 وكل سنة وإنتِ أحلى "دنيا". ❤️`;
 
-function typeLetter(){
+function typeLetter() {
   const el = $("typed");
-  let i=0;
-  const timer=setInterval(()=>{
-    el.textContent=message.slice(0,++i);
-    if(i>=message.length) clearInterval(timer);
-  },28);
+
+  if (!el) return;
+
+  let i = 0;
+
+  const timer = setInterval(() => {
+    el.textContent = message.slice(0, ++i);
+
+    if (i >= message.length) {
+      clearInterval(timer);
+    }
+  }, 28);
 }
 
-function render(){
-  if(photos.length){
-    $("photos").innerHTML="";
-    photos.forEach(f=>{
-      const img=document.createElement("img");
-      img.src=""+f; img.alt="ذكرى"; img.loading="lazy";
-      $("photos").appendChild(img);
+function render() {
+
+  const photoContainer = $("photos");
+
+  if (photoContainer && photos.length) {
+    photoContainer.innerHTML = "";
+
+    photos.forEach(file => {
+      const img = document.createElement("img");
+
+      img.src = file;
+      img.alt = "Dunia ❤️";
+      img.loading = "lazy";
+
+      photoContainer.appendChild(img);
     });
   }
-  if(videos.length){
-    $("videos").innerHTML="";
-    videos.forEach(f=>{
-      const v=document.createElement("video");
-      v.src=""+f; v.controls=true; v.playsInline=true;
-      $("videos").appendChild(v);
+
+  const videoContainer = $("videos");
+
+  if (videoContainer && videos.length) {
+    videoContainer.innerHTML = "";
+
+    videos.forEach(file => {
+      const v = document.createElement("video");
+
+      v.src = file;
+      v.controls = true;
+      v.playsInline = true;
+      v.preload = "metadata";
+
+      videoContainer.appendChild(v);
     });
   }
-  if(audios.length){
-    $("audios").innerHTML="";
-    audios.forEach(a=>{
-      const box=document.createElement("div"); box.className="audio-item";
-      box.innerHTML=`<p>${a.title||"تسجيل صوتي ❤️"}</p>`;
-      const au=document.createElement("audio"); au.src=""+a.file; au.controls=true;
-      box.appendChild(au); $("audios").appendChild(box);
+
+  const audioContainer = $("audios");
+
+  if (audioContainer && audios.length) {
+    audioContainer.innerHTML = "";
+
+    audios.forEach(audio => {
+
+      const box = document.createElement("div");
+
+      box.className = "audio-item";
+
+      const title = document.createElement("p");
+
+      title.textContent = audio.title;
+
+      const au = document.createElement("audio");
+
+      au.src = audio.file;
+      au.controls = true;
+      au.preload = "metadata";
+
+      box.appendChild(title);
+      box.appendChild(au);
+
+      audioContainer.appendChild(box);
     });
   }
-  if(musicFile){
-    $("bgMusic").src=""+musicFile;
-    const m = $("bgMusic");
+
+  const m = $("bgMusic");
+
+  if (m && musicFile) {
+
+    m.src = musicFile;
+
     m.addEventListener("timeupdate", () => {
+
       if (m.currentTime >= musicMaxSeconds) {
+
         m.pause();
         m.currentTime = 0;
-        $("music").textContent = "♫";
+
+        if ($("music")) {
+          $("music").textContent = "♫";
+        }
       }
     });
-    $("music").onclick=async()=>{
-      try {
-        if(m.paused){
-          if(m.currentTime >= musicMaxSeconds) m.currentTime = 0;
-          await m.play();
-          $("music").textContent="❚❚";
-        }else{
-          m.pause();
-          $("music").textContent="♫";
-        }
-      } catch(e) {}
-    };
-  }else{
-    $("music").style.display="none";
+
+    if ($("music")) {
+
+      $("music").onclick = async () => {
+
+        try {
+
+          if (m.paused) {
+
+            if (m.currentTime >= musicMaxSeconds) {
+              m.currentTime = 0;
+            }
+
+            await m.play();
+
+            $("music").textContent = "❚❚";
+
+          } else {
+
+            m.pause();
+
+            $("music").textContent = "♫";
+          }
+
+        } catch(e) {}
+      };
+    }
+
+  } else {
+
+    if ($("music")) {
+      $("music").style.display = "none";
+    }
   }
 }
 
-function startHearts(){
-  setInterval(()=>{
-    const h=document.createElement("div");h.className="heart";h.textContent=Math.random()>.25?"♥":"♡";
-    h.style.left=Math.random()*100+"vw";
-    h.style.fontSize=12+Math.random()*22+"px";
-    h.style.animationDuration=5+Math.random()*5+"s";
-    $("hearts").appendChild(h);setTimeout(()=>h.remove(),11000);
-  },650);
+function createHeart() {
+
+  const container = $("hearts");
+
+  if (!container) return;
+
+  const h = document.createElement("div");
+
+  h.className = "heart";
+
+  h.textContent = Math.random() > .25 ? "♥" : "♡";
+
+  h.style.left = Math.random() * 100 + "vw";
+
+  h.style.fontSize =
+    14 + Math.random() * 24 + "px";
+
+  h.style.animationDuration =
+    4 + Math.random() * 4 + "s";
+
+  container.appendChild(h);
+
+  setTimeout(() => h.remove(), 9000);
 }
-for(let i=0;i<80;i++){
-  const s=document.createElement("i");s.className="star";
-  s.style.left=Math.random()*100+"vw";s.style.top=Math.random()*100+"vh";
-  s.style.opacity=.15+Math.random()*.5;
-  $("stars").appendChild(s);
+
+function startHearts() {
+
+  setInterval(() => {
+    createHeart();
+  }, 650);
 }
+
+const starsContainer = $("stars");
+
+if (starsContainer) {
+
+  for (let i = 0; i < 80; i++) {
+
+    const s = document.createElement("i");
+
+    s.className = "star";
+
+    s.style.left = Math.random() * 100 + "vw";
+
+    s.style.top = Math.random() * 100 + "vh";
+
+    s.style.opacity =
+      .15 + Math.random() * .5;
+
+    starsContainer.appendChild(s);
+  }
+}
+
 render();
 
-// آخر مفاجأة: تشغيل الريكورد ثم إطلاق البلالين عند انتهائه
-const finalButton = document.getElementById("finalButton");
-const finalAudio = document.getElementById("finalAudio");
-const finalStatus = document.getElementById("finalStatus");
-const balloons = document.getElementById("balloons");
+
+// =====================================
+// LAST SURPRISE
+// =====================================
+
+const finalButton = $("finalButton");
+const finalAudio = $("finalAudio");
+const finalStatus = $("finalStatus");
+const balloons = $("balloons");
 
 if (finalButton && finalAudio) {
+
   finalButton.addEventListener("click", async () => {
+
     try {
+
       finalAudio.currentTime = 0;
+
       await finalAudio.play();
-      finalButton.textContent = "بيشتغل دلوقتي 🎙️";
-      finalStatus.textContent = "اسمعي للآخر... ❤️";
-    } catch (e) {
-      finalStatus.textContent = "دوسي مرة تانية لتشغيل الريكورد ❤️";
+
+      finalButton.textContent =
+        "بيشتغل دلوقتي 🎙️";
+
+      if (finalStatus) {
+        finalStatus.textContent =
+          "اسمعي للآخر... ❤️";
+      }
+
+    } catch(e) {
+
+      if (finalStatus) {
+        finalStatus.textContent =
+          "دوسي مرة تانية لتشغيل الريكورد ❤️";
+      }
     }
   });
 
   finalAudio.addEventListener("ended", () => {
-    finalButton.textContent = "المفاجأة خلصت 🎈";
-    finalStatus.textContent = "كل سنة وإنتِ طيبة يا Dunia ❤️";
+
+    finalButton.textContent =
+      "المفاجأة خلصت 🎈";
+
+    if (finalStatus) {
+      finalStatus.textContent =
+        "كل سنة وإنتِ طيبة يا Dunia ❤️";
+    }
+
     launchBalloons();
   });
 }
 
-function launchBalloons(){
+function launchBalloons() {
+
+  if (!balloons) return;
+
   const count = 28;
-  for(let i=0;i<count;i++){
-    const b=document.createElement("div");
-    b.className="balloon";
-    b.style.left=(Math.random()*100)+"%";
-    b.style.animationDelay=(Math.random()*1.8)+"s";
-    b.style.animationDuration=(4+Math.random()*3)+"s";
-    const size=32+Math.random()*28;
-    b.style.width=size+"px";
-    b.style.height=(size*1.32)+"px";
-    b.style.color="hsl("+(Math.random()*360)+", 70%, 65%)";
-    b.style.background="hsl("+(Math.random()*360)+", 70%, 65%)";
+
+  for (let i = 0; i < count; i++) {
+
+    const b = document.createElement("div");
+
+    b.className = "balloon";
+
+    b.style.left =
+      Math.random() * 100 + "%";
+
+    b.style.animationDelay =
+      Math.random() * 1.8 + "s";
+
+    b.style.animationDuration =
+      4 + Math.random() * 3 + "s";
+
+    const size =
+      32 + Math.random() * 28;
+
+    b.style.width =
+      size + "px";
+
+    b.style.height =
+      size * 1.32 + "px";
+
+    const hue =
+      Math.random() * 360;
+
+    b.style.color =
+      `hsl(${hue}, 70%, 65%)`;
+
+    b.style.background =
+      `hsl(${hue}, 70%, 65%)`;
+
     balloons.appendChild(b);
-    setTimeout(()=>b.remove(),8500);
+
+    setTimeout(() => b.remove(), 8500);
   }
 }
 
 
-// ===== EXTRA FEATURES =====
-document.querySelectorAll(".game-option").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    const result=document.getElementById("gameResult");
-    if(btn.textContent.includes("Dunia")){
-      result.textContent="صح! إنتِ طبعًا ❤️😂";
-      result.style.color="#d10067";
-      for(let i=0;i<12;i++) setTimeout(()=>createHeart(),i*70);
-    }else{
-      result.textContent="غلط 😂 جربي تاني… الإجابة واضحة جدًا: Dunia ❤️";
-      result.style.color="#000";
+// =====================================
+// MINI GAME
+// =====================================
+
+document.querySelectorAll(".game-option")
+.forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    const result = $("gameResult");
+
+    if (!result) return;
+
+    if (button.textContent.includes("Dunia")) {
+
+      result.textContent =
+        "صح! إنتِ طبعًا ❤️😂";
+
+      result.style.color =
+        "#d10067";
+
+      for (let i = 0; i < 12; i++) {
+        setTimeout(createHeart, i * 70);
+      }
+
+    } else {
+
+      result.textContent =
+        "غلط 😂 جربي تاني… الإجابة واضحة جدًا: Dunia ❤️";
+
+      result.style.color =
+        "#000";
     }
   });
 });
 
-const giftBox=document.getElementById("giftBox");
-if(giftBox){
-  giftBox.addEventListener("click",()=>{
+
+// =====================================
+// SURPRISE BOX
+// =====================================
+
+const giftBox = $("giftBox");
+
+if (giftBox) {
+
+  giftBox.addEventListener("click", () => {
+
     giftBox.classList.add("opened");
-    document.getElementById("giftMessage").classList.remove("hidden");
-    for(let i=0;i<18;i++) setTimeout(()=>createHeart(),i*45);
+
+    const giftMessage =
+      $("giftMessage");
+
+    if (giftMessage) {
+      giftMessage.classList.remove("hidden");
+    }
+
+    for (let i = 0; i < 18; i++) {
+      setTimeout(createHeart, i * 45);
+    }
   });
 }
 
-const cdAudio=document.getElementById("cdAudio");
-const cdDisc=document.getElementById("cdDisc");
-const cdPlay=document.getElementById("cdPlay");
-const cdPause=document.getElementById("cdPause");
-if(cdAudio){
-  cdPlay.addEventListener("click",async()=>{
-    try{await cdAudio.play();cdDisc.classList.add("playing")}catch(e){}
+
+// =====================================
+// CD PLAYER
+// =====================================
+
+const cdAudio = $("cdAudio");
+const cdDisc = $("cdDisc");
+const cdPlay = $("cdPlay");
+const cdPause = $("cdPause");
+
+if (cdAudio) {
+
+  if (cdPlay) {
+
+    cdPlay.addEventListener("click", async () => {
+
+      try {
+
+        await cdAudio.play();
+
+        if (cdDisc) {
+          cdDisc.classList.add("playing");
+        }
+
+      } catch(e) {}
+    });
+  }
+
+  if (cdPause) {
+
+    cdPause.addEventListener("click", () => {
+
+      cdAudio.pause();
+
+      if (cdDisc) {
+        cdDisc.classList.remove("playing");
+      }
+    });
+  }
+
+  cdAudio.addEventListener("ended", () => {
+
+    if (cdDisc) {
+      cdDisc.classList.remove("playing");
+    }
   });
-  cdPause.addEventListener("click",()=>{
-    cdAudio.pause();cdDisc.classList.remove("playing");
-  });
-  cdAudio.addEventListener("ended",()=>cdDisc.classList.remove("playing"));
 }
 
-const eggTrigger=document.getElementById("eggTrigger");
-if(eggTrigger){
-  eggTrigger.addEventListener("click",()=>{
-    document.getElementById("eggMessage").classList.remove("hidden");
-    for(let i=0;i<25;i++) setTimeout(()=>createHeart(),i*35);
+
+// =====================================
+// EASTER EGG
+// =====================================
+
+const eggTrigger = $("eggTrigger");
+
+if (eggTrigger) {
+
+  eggTrigger.addEventListener("click", () => {
+
+    const eggMessage =
+      $("eggMessage");
+
+    if (eggMessage) {
+      eggMessage.classList.remove("hidden");
+    }
+
+    for (let i = 0; i < 25; i++) {
+      setTimeout(createHeart, i * 35);
+    }
   });
 }
 
-// ===== FINAL LETTER REVEAL =====
-const finalScreen=document.getElementById("finalMessageScreen");
-const finalCard=finalScreen?.querySelector(".final-message-card");
-const finalTyped=document.getElementById("finalTypedMessage");
-const finalSignature=document.getElementById("finalSignature");
 
-function revealFinalLetter(){
-  if(!finalScreen || !finalTyped || finalTyped.dataset.started==="1") return;
-  finalTyped.dataset.started="1";
-  finalCard?.classList.add("reveal");
-  const msg=finalTyped.dataset.message || "";
-  finalTyped.innerHTML="";
-  const lines=msg.split("\n");
-  lines.forEach((line,i)=>{
-    const span=document.createElement("span");
-    span.className="line";
-    span.textContent=line || "\u00A0";
+// =====================================
+// FINAL LETTER
+// =====================================
+
+const finalScreen =
+  $("finalMessageScreen");
+
+const finalCard =
+  finalScreen?.querySelector(".final-message-card");
+
+const finalTyped =
+  $("finalTypedMessage");
+
+const finalSignature =
+  $("finalSignature");
+
+function revealFinalLetter() {
+
+  if (
+    !finalScreen ||
+    !finalTyped ||
+    finalTyped.dataset.started === "1"
+  ) {
+    return;
+  }
+
+  finalTyped.dataset.started = "1";
+
+  if (finalCard) {
+    finalCard.classList.add("reveal");
+  }
+
+  const msg =
+    finalTyped.dataset.message || "";
+
+  finalTyped.innerHTML = "";
+
+  const lines =
+    msg.split("\n");
+
+  lines.forEach((line, i) => {
+
+    const span =
+      document.createElement("span");
+
+    span.className = "line";
+
+    span.textContent =
+      line || "\u00A0";
+
     finalTyped.appendChild(span);
-    setTimeout(()=>span.classList.add("show"),900+i*420);
+
+    setTimeout(() => {
+
+      span.classList.add("show");
+
+    }, 900 + i * 420);
   });
-  setTimeout(()=>{
-    finalSignature?.classList.add("show");
+
+  setTimeout(() => {
+
+    if (finalSignature) {
+      finalSignature.classList.add("show");
+    }
+
     finalScreen.classList.add("finished");
-    for(let i=0;i<18;i++) setTimeout(()=>createHeart(),i*55);
-  },900+lines.length*420+600);
+
+    for (let i = 0; i < 18; i++) {
+      setTimeout(createHeart, i * 55);
+    }
+
+  }, 900 + lines.length * 420 + 600);
 }
 
-if(finalScreen){
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting) revealFinalLetter();});
-  },{threshold:.35});
-  obs.observe(finalScreen);
+if (finalScreen) {
+
+  const observer =
+    new IntersectionObserver(entries => {
+
+      entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+          revealFinalLetter();
+        }
+
+      });
+
+    }, {
+      threshold: 0.35
+    });
+
+  observer.observe(finalScreen);
 }
