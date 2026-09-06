@@ -624,189 +624,111 @@ if (finalScreen) {
     });
 
   observer.observe(finalScreen);
-// ===== FINAL SCREEN FIX ONLY =====
+// ===== FINAL SCREEN FINAL FIX =====
 
-const finalFixStyle = document.createElement("style");
+window.addEventListener("load", function () {
 
-finalFixStyle.textContent = `
-#finalMessageScreen {
-  min-height: 100vh !important;
-  position: relative !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 60px 16px !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #fff5fa 50%,
-    #ffe8f3 100%
-  ) !important;
-}
+  const screen = document.getElementById("finalMessageScreen");
+  const card = document.querySelector("#finalMessageScreen .final-message-card");
+  const title = document.querySelector("#finalMessageScreen h1");
+  const intro = document.querySelector("#finalMessageScreen .final-intro");
+  const message = document.getElementById("finalTypedMessage");
+  const signature = document.getElementById("finalSignature");
 
-#finalMessageScreen .final-message-card {
-  width: min(800px, 100%) !important;
-  box-sizing: border-box !important;
-  position: relative !important;
-  z-index: 10 !important;
-  background: rgba(255,255,255,.97) !important;
-  color: #111 !important;
-  text-align: center !important;
-  direction: rtl !important;
-  border: 3px solid #111 !important;
-  border-radius: 25px !important;
-  padding: 40px 25px !important;
-  box-shadow: 10px 10px 0 #111 !important;
-}
+  if (!screen || !card || !message) return;
 
-#finalMessageScreen h1 {
-  color: #111 !important;
-  font-size: clamp(30px, 7vw, 60px) !important;
-  line-height: 1.2 !important;
-  margin: 15px 0 20px !important;
-}
+  // الشاشة
+  screen.style.setProperty("min-height", "100vh", "important");
+  screen.style.setProperty("display", "flex", "important");
+  screen.style.setProperty("align-items", "center", "important");
+  screen.style.setProperty("justify-content", "center", "important");
+  screen.style.setProperty("padding", "50px 15px", "important");
+  screen.style.setProperty("background", "linear-gradient(180deg,#fff,#fff5fa,#ffe8f3)", "important");
+  screen.style.setProperty("overflow", "hidden", "important");
 
-#finalMessageScreen .final-intro {
-  color: #555 !important;
-  font-size: 17px !important;
-  line-height: 1.8 !important;
-  margin-bottom: 25px !important;
-}
+  // الكارت
+  card.style.setProperty("width", "min(800px,100%)", "important");
+  card.style.setProperty("background", "#ffffff", "important");
+  card.style.setProperty("color", "#111111", "important");
+  card.style.setProperty("text-align", "center", "important");
+  card.style.setProperty("direction", "rtl", "important");
+  card.style.setProperty("opacity", "1", "important");
+  card.style.setProperty("transform", "none", "important");
+  card.style.setProperty("position", "relative", "important");
+  card.style.setProperty("z-index", "20", "important");
+  card.style.setProperty("padding", "35px 20px", "important");
+  card.style.setProperty("border-radius", "25px", "important");
+  card.style.setProperty("border", "3px solid #111", "important");
+  card.style.setProperty("box-shadow", "9px 9px 0 #111", "important");
 
-#finalMessageScreen .user-final-message {
-  color: #111 !important;
-  width: 100% !important;
-  max-width: 700px !important;
-  margin: 0 auto !important;
-  font-size: clamp(18px, 4vw, 25px) !important;
-  font-weight: 600 !important;
-  line-height: 2 !important;
-  text-align: center !important;
-  direction: rtl !important;
-  overflow: visible !important;
-}
-
-#finalMessageScreen .user-final-message .line {
-  display: block !important;
-  color: #111 !important;
-  opacity: 0 !important;
-  transform: translateY(15px) !important;
-  margin: 5px 0 !important;
-  white-space: pre-wrap !important;
-  transition: opacity .8s ease, transform .8s ease !important;
-}
-
-#finalMessageScreen .user-final-message .line.show {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-#finalMessageScreen .user-final-message .line:first-child {
-  color: #d10067 !important;
-  font-size: 1.15em !important;
-  font-weight: 900 !important;
-}
-
-#finalMessageScreen .signature {
-  position: relative !important;
-  z-index: 20 !important;
-  color: #d10067 !important;
-  font-size: 20px !important;
-  font-weight: 900 !important;
-  margin-top: 30px !important;
-}
-
-#finalMessageScreen .tiny-stars {
-  position: relative !important;
-  z-index: 20 !important;
-  color: #d10067 !important;
-}
-
-#finalMessageScreen .final-glow {
-  pointer-events: none !important;
-}
-
-#finalMessageScreen .heart,
-#finalMessageScreen .balloon {
-  z-index: 1 !important;
-  pointer-events: none !important;
-}
-
-@media(max-width:600px) {
-  #finalMessageScreen {
-    padding: 45px 12px !important;
+  // العنوان
+  if (title) {
+    title.style.setProperty("color", "#111111", "important");
+    title.style.setProperty("opacity", "1", "important");
   }
 
-  #finalMessageScreen .final-message-card {
-    padding: 30px 17px !important;
-    border-width: 2px !important;
-    box-shadow: 7px 7px 0 #111 !important;
+  // المقدمة
+  if (intro) {
+    intro.style.setProperty("color", "#555555", "important");
+    intro.style.setProperty("opacity", "1", "important");
   }
 
-  #finalMessageScreen .user-final-message {
-    font-size: 18px !important;
-    line-height: 1.85 !important;
-  }
-}
-`;
+  // الرسالة
+  const text = message.dataset.message || "";
 
-document.head.appendChild(finalFixStyle);
+  message.innerHTML = "";
 
+  message.style.setProperty("color", "#111111", "important");
+  message.style.setProperty("opacity", "1", "important");
+  message.style.setProperty("display", "block", "important");
+  message.style.setProperty("width", "100%", "important");
+  message.style.setProperty("max-width", "700px", "important");
+  message.style.setProperty("margin", "0 auto", "important");
+  message.style.setProperty("font-size", "20px", "important");
+  message.style.setProperty("line-height", "1.9", "important");
+  message.style.setProperty("text-align", "center", "important");
+  message.style.setProperty("direction", "rtl", "important");
 
-// Fix heart function used by the final effects
-if (typeof createHeart !== "function") {
-  window.createHeart = function() {
-    const container = document.getElementById("hearts");
-    if (!container) return;
-
-    const heart = document.createElement("div");
-
-    heart.className = "heart";
-    heart.textContent = Math.random() > .25 ? "♥" : "♡";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = 14 + Math.random() * 24 + "px";
-    heart.style.animationDuration = 4 + Math.random() * 4 + "s";
-
-    container.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 9000);
-  };
-}
-
-
-// Rebuild the final message cleanly
-const finalScreenFix = document.getElementById("finalMessageScreen");
-const finalMessageFix = document.getElementById("finalTypedMessage");
-
-if (finalScreenFix && finalMessageFix) {
-
-  const messageText =
-    finalMessageFix.dataset.message || "";
-
-  finalMessageFix.innerHTML = "";
-
-  messageText.split("\n").forEach((line, index) => {
+  text.split("\n").forEach(function(line, index) {
 
     const span = document.createElement("span");
 
-    span.className = "line";
     span.textContent = line || "\u00A0";
 
-    finalMessageFix.appendChild(span);
+    span.style.display = "block";
+    span.style.color = index === 0 ? "#d10067" : "#111111";
+    span.style.opacity = "0";
+    span.style.transform = "translateY(12px)";
+    span.style.transition = "opacity .7s ease, transform .7s ease";
+    span.style.margin = "5px 0";
 
-    setTimeout(() => {
-      span.classList.add("show");
-    }, 700 + index * 450);
+    if (index === 0) {
+      span.style.fontWeight = "900";
+      span.style.fontSize = "1.15em";
+    }
+
+    message.appendChild(span);
+
+    setTimeout(function() {
+      span.style.opacity = "1";
+      span.style.transform = "translateY(0)";
+    }, 500 + index * 350);
+
   });
 
-  const signature =
-    document.getElementById("finalSignature");
-
+  // التوقيع
   if (signature) {
-    setTimeout(() => {
-      signature.classList.add("show");
-    }, 700 + messageText.split("\n").length * 450 + 700);
+
+    signature.style.setProperty("color", "#d10067", "important");
+    signature.style.setProperty("opacity", "0", "important");
+    signature.style.setProperty("transform", "translateY(10px)", "important");
+    signature.style.setProperty("position", "relative", "important");
+    signature.style.setProperty("z-index", "30", "important");
+
+    setTimeout(function() {
+      signature.style.setProperty("opacity", "1", "important");
+      signature.style.setProperty("transform", "translateY(0)", "important");
+    }, 500 + text.split("\n").length * 350 + 700);
   }
-}
+
+});
