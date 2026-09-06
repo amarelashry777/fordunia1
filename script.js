@@ -530,137 +530,80 @@ if (eggTrigger) {
     }
   });
 }
-
-
 // =====================================
-// FINAL LETTER
+// FINAL LETTER - SHOW MESSAGE
 // =====================================
 
-const finalScreen =
-  $("finalMessageScreen");
-
-const finalCard =
-  finalScreen?.querySelector(".final-message-card");
-
-const finalTyped =
-  $("finalTypedMessage");
-
-const finalSignature =
-  $("finalSignature");
+const finalScreen = $("finalMessageScreen");
+const finalCard = finalScreen?.querySelector(".final-message-card");
+const finalTyped = $("finalTypedMessage");
+const finalSignature = $("finalSignature");
 
 function revealFinalLetter() {
 
-  if (
-    !finalScreen ||
-    !finalTyped ||
-    finalTyped.dataset.started === "1"
-  ) {
-    return;
+  if (!finalScreen || !finalCard || !finalTyped) return;
+
+  // إظهار الشاشة والكارت
+  finalScreen.style.display = "flex";
+  finalScreen.style.visibility = "visible";
+  finalScreen.style.opacity = "1";
+
+  finalCard.style.opacity = "1";
+  finalCard.style.visibility = "visible";
+  finalCard.style.transform = "none";
+
+  // العنوان
+  const title = finalCard.querySelector("h1");
+  if (title) {
+    title.style.opacity = "1";
+    title.style.visibility = "visible";
+    title.style.color = "#111";
   }
 
-  finalTyped.dataset.started = "1";
-
-  if (finalCard) {
-    finalCard.classList.add("reveal");
+  // المقدمة
+  const intro = $("finalIntro");
+  if (intro) {
+    intro.style.opacity = "1";
+    intro.style.visibility = "visible";
+    intro.style.color = "#555";
   }
 
-  const msg =
-    finalTyped.dataset.message || "";
+  // الرسالة
+  const msg = finalTyped.dataset.message || "";
 
   finalTyped.innerHTML = "";
+  finalTyped.style.opacity = "1";
+  finalTyped.style.visibility = "visible";
+  finalTyped.style.color = "#111";
+  finalTyped.style.display = "block";
+  finalTyped.style.whiteSpace = "normal";
+  finalTyped.style.direction = "rtl";
+  finalTyped.style.textAlign = "center";
 
-  const lines =
-    msg.split("\n");
+  msg.split("\n").forEach(line => {
 
-  lines.forEach((line, i) => {
+    const span = document.createElement("span");
 
-    const span =
-      document.createElement("span");
+    span.textContent = line || "\u00A0";
 
-    span.className = "line";
-
-    span.textContent =
-      line || "\u00A0";
+    span.style.display = "block";
+    span.style.opacity = "1";
+    span.style.visibility = "visible";
+    span.style.transform = "none";
+    span.style.color = "#111";
+    span.style.margin = "7px 0";
+    span.style.lineHeight = "1.8";
 
     finalTyped.appendChild(span);
-
-    setTimeout(() => {
-
-      span.classList.add("show");
-
-    }, 900 + i * 420);
   });
 
-  setTimeout(() => {
-
-    if (finalSignature) {
-      finalSignature.classList.add("show");
-    }
-
-    finalScreen.classList.add("finished");
-
-    for (let i = 0; i < 18; i++) {
-      setTimeout(createHeart, i * 55);
-    }
-
-  }, 900 + lines.length * 420 + 600);
+  // التوقيع
+  if (finalSignature) {
+    finalSignature.style.opacity = "1";
+    finalSignature.style.visibility = "visible";
+    finalSignature.style.transform = "none";
+  }
 }
 
-if (finalScreen) {
-
-  const observer =
-    new IntersectionObserver(entries => {
-
-      entries.forEach(entry => {
-
-        if (entry.isIntersecting) {
-          revealFinalLetter();
-        }
-
-      });
-
-    }, {
-      threshold: 0.35
-    });
-
-  observer.observe(finalScreen);
-}
-<main class="video-page-grid">
-
-  <article class="video-card">
-    <video controls playsinline preload="metadata" src="dhka.mov"></video>
-  </article>
-
-  <article class="video-card">
-    <video controls playsinline preload="metadata" src="memory_1.mp4"></video>
-  </article>
-
-  <article class="video-card">
-    <video controls playsinline preload="metadata" src="memory_2.mp4"></video>
-  </article>
-
-  <article class="video-card">
-    <video controls playsinline preload="metadata" src="memory_3.mp4"></video>
-  </article>
-
-  <article class="video-card">
-    <video controls playsinline preload="metadata" src="memory_4.mov"></video>
-  </article>
-
-  <article class="video-card">
-    <video controls playsinline preload="metadata" src="memory_5.mp4"></video>
-  </article>
-
-  <article class="video-card">
-    <video controls playsinline preload="metadata" src="memory_6.mov"></video>
-  </article>
-
-  <article class="video-card">
-    <video controls playsinline preload="metadata" src="memory_7.mp4"></video>
-  </article>
-
-  <article class="video-card">
-    <video controls playsinline preload="metadata" src="memory_8.mov"></video>
-  </article>
-
-</main>
+// إظهار الرسالة فورًا
+window.addEventListener("load", revealFinalLetter);
